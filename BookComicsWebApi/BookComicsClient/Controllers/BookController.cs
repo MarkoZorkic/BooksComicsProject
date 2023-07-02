@@ -11,26 +11,23 @@ namespace BookComicsClient.Controllers
 {
     public class BookController : Controller
     {
-        private readonly int PageSize = 5;
+
         private readonly AppSettings _appSettings;
+        private readonly AuthorizationKey _apiKey;
 
-        //public const string BASE_ADDRESS = "http://localhost:7218/";
-        //private readonly HttpClient _httpClient;
-        public BookController(/*HttpClient httpClient*/IOptions<AppSettings> appSettings)
+
+        public BookController(IOptions<AppSettings> appSettings, IOptions<AuthorizationKey> apiKey)
         {
-            //_httpClient = httpClient;
             _appSettings = appSettings.Value;
+            _apiKey = apiKey.Value;
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
+       
         public async Task<IActionResult> GetTableData()
         {
             string baseUrl = _appSettings.BaseUrl;
+            string apiKey = _apiKey.ApiKey;
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
+            client.DefaultRequestHeaders.Add("ApiKey", apiKey);
             IEnumerable<BookWebApiModel> books = null!;
             client.BaseAddress = new Uri(baseUrl);
             
@@ -48,9 +45,10 @@ namespace BookComicsClient.Controllers
         public async Task<IActionResult> GetTableDataPartial(bool isChecked)
         {
             string baseUrl = _appSettings.BaseUrl;
+            string apiKey = _apiKey.ApiKey;
 
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
+            client.DefaultRequestHeaders.Add("ApiKey", apiKey);
 
             IEnumerable<BookWebApiModel> topRatedBooks = null!;
             client.BaseAddress = new Uri(baseUrl);
@@ -69,9 +67,10 @@ namespace BookComicsClient.Controllers
         public async Task<IActionResult> IndexWithSearchTerm(bool isChecked, string searchTerm)
         {
             string baseUrl = _appSettings.BaseUrl;
+            string apiKey = _apiKey.ApiKey;
 
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
+            client.DefaultRequestHeaders.Add("ApiKey", apiKey);
 
             IEnumerable<BookWebApiModel> searchedData = null!;
             client.BaseAddress = new Uri(baseUrl);
@@ -89,9 +88,10 @@ namespace BookComicsClient.Controllers
         public async Task<IActionResult> GetAdditionalContent(bool isChecked, int pageNumber)
         {
             string baseUrl = _appSettings.BaseUrl;
+            string apiKey = _apiKey.ApiKey;
 
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
+            client.DefaultRequestHeaders.Add("ApiKey", apiKey);
 
             IEnumerable<BookWebApiModel> additionalContent = null!;
             client.BaseAddress = new Uri(baseUrl);

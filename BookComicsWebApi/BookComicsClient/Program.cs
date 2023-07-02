@@ -10,6 +10,8 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 builder.Services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
+builder.Services.Configure<AuthorizationKey>(configuration.GetSection("AuthorizationKey"));
+
 builder.Services.AddHttpClient();
 
 

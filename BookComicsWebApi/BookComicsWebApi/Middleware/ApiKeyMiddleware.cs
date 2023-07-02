@@ -1,22 +1,27 @@
-﻿namespace BookComicsWebApi.Middleware
+﻿using BookComicsWebApi.Helpers;
+using Microsoft.Extensions.Options;
+
+namespace BookComicsWebApi.Middleware
 {
     public class ApiKeyMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly AuthorizationKey _apiKey;
 
-        public ApiKeyMiddleware(RequestDelegate next)
+        public ApiKeyMiddleware(RequestDelegate next, IOptions<AuthorizationKey> apiKey)
         {
             _next = next;
+            _apiKey = apiKey.Value;
         }
 
         public async Task Invoke(HttpContext context)
         {
             
             string apiKey = context.Request.Headers["ApiKey"];
-            string validApiKey = "your-valid-api-key"; // Replace with your actual valid API key
+            string validApiKey = _apiKey.ApiKey; 
+            
             if (string.IsNullOrEmpty(apiKey))
             {
-                // Check if the API key is passed as a query parameter
                 apiKey = context.Request.Headers["Authorization"]; ;
             }
             if (apiKey != validApiKey)

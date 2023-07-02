@@ -1,5 +1,6 @@
 using BookComicsWebApi.Contracts;
 using BookComicsWebApi.Data;
+using BookComicsWebApi.Helpers;
 using BookComicsWebApi.Middleware;
 using BookComicsWebApi.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,12 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json")
+    .Build();
+builder.Services.Configure<AuthorizationKey>(configuration.GetSection("AuthorizationKey"));
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
