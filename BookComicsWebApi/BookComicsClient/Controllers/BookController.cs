@@ -24,6 +24,7 @@ namespace BookComicsClient.Controllers
 
         public async Task<IActionResult> GetTableData()
         {
+            
             HttpClient client = new HttpClient();
 
             IEnumerable<BookWebApiModel> books = null!;
@@ -43,7 +44,9 @@ namespace BookComicsClient.Controllers
         {
             HttpClient client = new HttpClient();
             IEnumerable<BookWebApiModel> topRatedBooks = null!;
-            var response = await client.GetAsync($"api/Book/GetTopRatedBooksAsync?isChecked={isChecked}");
+            client.BaseAddress = new Uri(BASE_ADDRESS);
+
+            var response = await client.GetAsync("api/Book/GetTableDataPartial?isChecked="+isChecked.ToString());
 
             if (response.IsSuccessStatusCode)
             {
@@ -51,13 +54,30 @@ namespace BookComicsClient.Controllers
                 topRatedBooks = JsonConvert.DeserializeObject<List<BookWebApiModel>>(result)!;
             }
 
-            return Ok(topRatedBooks);
+            return PartialView("Results",topRatedBooks);
+        }
+
+        public async Task<IActionResult> IndexWithSearchTerm(bool isChecked, string searchTerm)
+        {
+            HttpClient client = new HttpClient();
+            IEnumerable<BookWebApiModel> searchedData = null!;
+            client.BaseAddress = new Uri(BASE_ADDRESS);
+
+            var response = await client.GetAsync("api/Book/IndexWithSearchTerm?isChecked="+isChecked.ToString().ToLower()+"&searchTerm="+searchTerm);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                searchedData = JsonConvert.DeserializeObject<List<BookWebApiModel>>(result)!;
+            }
+
+            return PartialView("Results",searchedData);
         }
 
         public async Task<IActionResult> GetAdditionalContent(bool isChecked, int pageNumber)
         {
             HttpClient client = new HttpClient();
             IEnumerable<BookWebApiModel> additionalContent = null!;
+            client.BaseAddress = new Uri(BASE_ADDRESS);
 
             // Get the additional content
             var response = await client.GetAsync($"api/Book/GetAdditionalContent?isChecked={isChecked}&pageNumber={pageNumber}");

@@ -69,7 +69,7 @@
         }
 </style>
 @model IEnumerable<BookComicsClient.Models.BookWebApiModel>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <table class="table" id="tagstable">
     <thead>
         <tr>
@@ -143,7 +143,7 @@
             // Send the toggle state to the server and update the table data
             $.ajax({
                 type: "GET",
-                url: "/Home/GetTableDataPartial",
+                url: "/Book/GetTableDataPartial",
                 data: { isChecked: isChecked },
                 success: function (response) {
                     $("#tbdata").html(response);
@@ -169,7 +169,7 @@
 
         $('#viewMoreButton').click(function () {
             $.ajax({
-                url: '/Home/GetAdditionalContent',
+                url: '/Book/GetAdditionalContent',
                 type: 'GET',
                 data: { pageNumber: pageNumber, isChecked: isChecked },
                 success: function (response) {
@@ -190,7 +190,7 @@
             // Send the toggle state and search term to the server and update the table
             $.ajax({
                 type: "GET",
-                url: "/Home/IndexWithSearchTerm",
+                url: "/Book/IndexWithSearchTerm",
                 data: { isChecked: isChecked, searchTerm: searchTerm },
                 success: function (response) {
                     // Replace the table body with the updated data
@@ -258,7 +258,7 @@
             if (selectedRating > 0) {
                 // Send the selectedRating value to a POST method
                 $.ajax({
-                    url: '/Home/RateBook', // Replace with your actual POST endpoint
+                    url: '/Book/RateBook', // Replace with your actual POST endpoint
                     type: 'POST',
                     data: { rating: selectedRating, bookId: selectedBookId },
                     success: function (result) {
@@ -291,7 +291,7 @@
         });
     });
 
-    // Function to refresh the table data
+     //Function to refresh the table data
     function refreshTableData() {
         console.log("marko1");
         var isChecked = $("#myToggle").is(":checked");
@@ -299,7 +299,7 @@
         // Send the toggle state to the server and update the table data
         $.ajax({
             type: "GET",
-            url: "/Home/GetTableDataPartial",
+            url: "/Book/GetTableDataPartial",
             data: { isChecked: isChecked },
             success: function (response) {
                 $("#tbdata").html(response);

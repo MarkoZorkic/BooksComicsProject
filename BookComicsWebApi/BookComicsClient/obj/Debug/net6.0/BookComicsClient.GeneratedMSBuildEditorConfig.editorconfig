@@ -28,6 +28,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/pc/Desktop/FinalProjectMarkoZorkic/BookComicsWebApi/BookComicsClient/Pages/Shared/GetTableData.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXEdldFRhYmxlRGF0YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pc/Desktop/FinalProjectMarkoZorkic/BookComicsWebApi/BookComicsClient/Pages/Shared/Results.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXFJlc3VsdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pc/Desktop/FinalProjectMarkoZorkic/BookComicsWebApi/BookComicsClient/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -38,10 +46,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/pc/Desktop/FinalProjectMarkoZorkic/BookComicsWebApi/BookComicsClient/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/pc/Desktop/FinalProjectMarkoZorkic/BookComicsWebApi/BookComicsClient/Views/Book/GetTableData.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1xHZXRUYWJsZURhdGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pc/Desktop/FinalProjectMarkoZorkic/BookComicsWebApi/BookComicsClient/Pages/Shared/_Layout.cshtml]
