@@ -22,6 +22,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//var configuration = new ConfigurationBuilder()
+//    .AddJsonFile("appsettings.json")
+//    .Build();
+
+
+//string apiKey = configuration["ApiKey"];
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

@@ -1,4 +1,5 @@
 ﻿using BookComicsClient.Models;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -26,9 +27,10 @@ namespace BookComicsClient.Controllers
         {
             
             HttpClient client = new HttpClient();
-
+            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
             IEnumerable<BookWebApiModel> books = null!;
             client.BaseAddress = new Uri(BASE_ADDRESS);
+            
             var response = await client.GetAsync("api/Book/GetTableData");
          
             if (response.IsSuccessStatusCode) 
@@ -43,6 +45,8 @@ namespace BookComicsClient.Controllers
         public async Task<IActionResult> GetTableDataPartial(bool isChecked)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
+
             IEnumerable<BookWebApiModel> topRatedBooks = null!;
             client.BaseAddress = new Uri(BASE_ADDRESS);
 
@@ -60,6 +64,8 @@ namespace BookComicsClient.Controllers
         public async Task<IActionResult> IndexWithSearchTerm(bool isChecked, string searchTerm)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
+
             IEnumerable<BookWebApiModel> searchedData = null!;
             client.BaseAddress = new Uri(BASE_ADDRESS);
 
@@ -76,6 +82,8 @@ namespace BookComicsClient.Controllers
         public async Task<IActionResult> GetAdditionalContent(bool isChecked, int pageNumber)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
+
             IEnumerable<BookWebApiModel> additionalContent = null!;
             client.BaseAddress = new Uri(BASE_ADDRESS);
 
