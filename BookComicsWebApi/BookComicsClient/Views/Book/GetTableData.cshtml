@@ -1,0 +1,309 @@
+﻿<label class="switch">
+    <input id="myToggle" type="checkbox" checked>
+    <span class="slider round"></span>
+</label>
+
+<div id="searchBar">
+    <input id="searchInput" type="text" placeholder="Search books..." minlength="3">
+    <button id="searchButton" class="btn btn-primary">Search</button>
+</div>
+<!-- CSS styles for the toggle switch -->
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+@model IEnumerable<BookComicsClient.Models.BookWebApiModel>
+
+<table class="table" id="tagstable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AverageRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbdata">
+    </tbody>
+</table>
+<button id="viewMoreButton" class="btn btn-primary">View More</button>
+<div class="modal fade modal-open" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ratingModalLabel">Rate Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Please rate the book: <span id="bookName"></span></p>
+                <div class="rating-stars">
+                    <!-- Empty stars -->
+                    <span class="star" data-value="1">&#9734;</span>
+                    <span class="star" data-value="2">&#9734;</span>
+                    <span class="star" data-value="3">&#9734;</span>
+                    <span class="star" data-value="4">&#9734;</span>
+                    <span class="star" data-value="5">&#9734;</span>
+                </div>
+            </div>
+            <div class="book-image-container">
+                <img id="bookImage" src="" alt="Book Image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="submitRating">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var pageNumber = 1;
+    $(document).ready(function () {
+        // Event handler for the toggle state change
+        $("#myToggle").change(function () {
+            console.log("yesy togle")
+            pageNumber = 1;
+            refreshTableData();
+        });
+
+        // Function to refresh the table data
+        function refreshTableData() {
+            console.log("marko1");
+            var isChecked = $("#myToggle").is(":checked");
+
+            // Send the toggle state to the server and update the table data
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetTableDataPartial",
+                data: { isChecked: isChecked },
+                success: function (response) {
+                    $("#tbdata").html(response);
+                }
+            });
+        }
+
+        // Initial table data population
+        refreshTableData();
+    });
+
+
+
+
+
+
+
+
+
+    $(document).ready(function () {
+         pageNumber = 1; // Initial page number
+        var isChecked = $("#myToggle").is(":checked");
+
+        $('#viewMoreButton').click(function () {
+            $.ajax({
+                url: '/Home/GetAdditionalContent',
+                type: 'GET',
+                data: { pageNumber: pageNumber, isChecked: isChecked },
+                success: function (response) {
+                    // Append the additional content to the content container
+                    $('#tbdata').append(response);
+
+                    // Increment the page number for the next request
+                    pageNumber++;
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response if needed
+                    console.log('Error retrieving additional content:', error);
+                }
+            });
+        });
+        // Function to refresh the table data
+        function refreshTable(isChecked, searchTerm) {
+            // Send the toggle state and search term to the server and update the table
+            $.ajax({
+                type: "GET",
+                url: "/Home/IndexWithSearchTerm",
+                data: { isChecked: isChecked, searchTerm: searchTerm },
+                success: function (response) {
+                    // Replace the table body with the updated data
+                    $("#tbdata").html(response);
+                }
+            });
+        }
+
+        // Event handler for the toggle state change
+        $("#myToggle").change(function () {
+            // Refresh the table when the toggle is changed
+            var searchTerm = $("#searchInput").val();
+            if (searchTerm.length >= 3) {
+                refreshTable($(this).is(":checked"), searchTerm);
+            }
+        });
+
+        // Event handler for search button click
+        $("#searchButton").click(function () {
+            // Refresh the table when the search button is clicked
+            var searchTerm = $("#searchInput").val();
+            if (searchTerm.length >= 3) {
+                refreshTable($("#myToggle").is(":checked"), searchTerm);
+            }
+        });
+
+        // Event handler for search input change
+        $("#searchInput").on("input", function () {
+            // Enable or disable the search button based on the search term length
+            var searchTerm = $(this).val();
+            if (searchTerm.length >= 3) {
+                $("#searchButton").prop("disabled", false);
+            } else {
+                $("#searchButton").prop("disabled", true);
+            }
+        });
+
+        // Initial table data population
+        refreshTable($("#myToggle").is(":checked"), "");
+    });
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        var selectedRating = 0; // Initialize selectedRating variable
+        var selectedBookId;
+        // Handle star selection
+        $('.rating-stars .star').click(function () {
+            selectedRating = $(this).data('value'); // Update selectedRating value
+
+            $('.rating-stars .star').each(function () {
+                var starValue = $(this).data('value');
+                if (starValue <= selectedRating) {
+                    $(this).addClass('selected'); // Add 'selected' class to fill star in yellow
+                } else {
+                    $(this).removeClass('selected'); // Remove 'selected' class to keep star empty
+                }
+            });
+        });
+
+        // Handle rating submission
+        $('#submitRating').click(function () {
+            if (selectedRating > 0) {
+                // Send the selectedRating value to a POST method
+                $.ajax({
+                    url: '/Home/RateBook', // Replace with your actual POST endpoint
+                    type: 'POST',
+                    data: { rating: selectedRating, bookId: selectedBookId },
+                    success: function (result) {
+                        // Handle success response if needed
+                        refreshTableData()
+                        pageNumber = 1;
+                        console.log('Rating submitted successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response if needed
+                        console.log('Error submitting rating:', error);
+                    }
+                });
+
+                // Close the modal
+                $('#ratingModal').modal('hide');
+            }
+        });
+
+
+        $(document.body).on("click", ".rate-book-button",function () {
+            console.log("dasdad");
+            var imagePath = $(this).data('image');
+            var bookId = $(this).data('bookid');
+            var bookTitle = $(this).data('title');
+            // Set the image source and book ID in the modal
+            $('#bookImage').attr('src', imagePath);
+            $('#bookName').text(bookTitle);
+            selectedBookId = bookId;
+        });
+    });
+
+    // Function to refresh the table data
+    function refreshTableData() {
+        console.log("marko1");
+        var isChecked = $("#myToggle").is(":checked");
+
+        // Send the toggle state to the server and update the table data
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetTableDataPartial",
+            data: { isChecked: isChecked },
+            success: function (response) {
+                $("#tbdata").html(response);
+            }
+        });
+    }
+</script>
