@@ -33,19 +33,18 @@ namespace BookComicsWebApi.Repositories
                 if (afterYearMatch.Success)
                 {
                     var year = int.Parse(afterYearMatch.Groups[1].Value);
-                    // Filter books published after the specified year
+
                     books = query.Where(x => x.ReleaseDate.Year > year).ToList();
                 }
                 else if (starMatch.Success)
                 {
                     var starRating = int.Parse(starMatch.Groups[1].Value);
-                    // Filter books with the specified star rating
-                    books = query.Where(x => GetAverageRate(x.Id) == starRating).ToList();
+
+                    books = query.OrderByDescending(x => GetAverageRate(x.Id) >= starRating).ToList();
                 }
                 else if (olderThanYearsMatch.Success)
                 {
                     var years = int.Parse(olderThanYearsMatch.Groups[1].Value);
-                    // Filter books older than the specified number of years
                     var cutoffDate = DateTime.Today.AddYears(-years);
                     books = query.Where(x => x.ReleaseDate < cutoffDate).ToList();
                 }
