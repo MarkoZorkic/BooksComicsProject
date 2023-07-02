@@ -1,4 +1,5 @@
-﻿using BookComicsClient.Models;
+﻿using BookComicsClient.Helpers;
+using BookComicsClient.Models;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -11,12 +12,14 @@ namespace BookComicsClient.Controllers
     public class BookController : Controller
     {
         private readonly int PageSize = 5;
+        private readonly AppSettings _appSettings;
 
-        public const string BASE_ADDRESS = "http://localhost:7218/";
+        //public const string BASE_ADDRESS = "http://localhost:7218/";
         //private readonly HttpClient _httpClient;
-        public BookController(HttpClient httpClient)
+        public BookController(/*HttpClient httpClient*/IOptions<AppSettings> appSettings)
         {
             //_httpClient = httpClient;
+            _appSettings = appSettings.Value;
         }
         //public IActionResult Index()
         //{
@@ -25,11 +28,11 @@ namespace BookComicsClient.Controllers
 
         public async Task<IActionResult> GetTableData()
         {
-            
+            string baseUrl = _appSettings.BaseUrl;
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
             IEnumerable<BookWebApiModel> books = null!;
-            client.BaseAddress = new Uri(BASE_ADDRESS);
+            client.BaseAddress = new Uri(baseUrl);
             
             var response = await client.GetAsync("api/Book/GetTableData");
          
@@ -44,11 +47,13 @@ namespace BookComicsClient.Controllers
 
         public async Task<IActionResult> GetTableDataPartial(bool isChecked)
         {
+            string baseUrl = _appSettings.BaseUrl;
+
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
 
             IEnumerable<BookWebApiModel> topRatedBooks = null!;
-            client.BaseAddress = new Uri(BASE_ADDRESS);
+            client.BaseAddress = new Uri(baseUrl);
 
             var response = await client.GetAsync("api/Book/GetTableDataPartial?isChecked="+isChecked.ToString());
 
@@ -63,11 +68,13 @@ namespace BookComicsClient.Controllers
 
         public async Task<IActionResult> IndexWithSearchTerm(bool isChecked, string searchTerm)
         {
+            string baseUrl = _appSettings.BaseUrl;
+
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
 
             IEnumerable<BookWebApiModel> searchedData = null!;
-            client.BaseAddress = new Uri(BASE_ADDRESS);
+            client.BaseAddress = new Uri(baseUrl);
 
             var response = await client.GetAsync("api/Book/IndexWithSearchTerm?isChecked="+isChecked.ToString().ToLower()+"&searchTerm="+searchTerm);
             if (response.IsSuccessStatusCode)
@@ -81,11 +88,13 @@ namespace BookComicsClient.Controllers
 
         public async Task<IActionResult> GetAdditionalContent(bool isChecked, int pageNumber)
         {
+            string baseUrl = _appSettings.BaseUrl;
+
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", "your-valid-api-key");
 
             IEnumerable<BookWebApiModel> additionalContent = null!;
-            client.BaseAddress = new Uri(BASE_ADDRESS);
+            client.BaseAddress = new Uri(baseUrl);
 
             // Get the additional content
             var response = await client.GetAsync($"api/Book/GetAdditionalContent?isChecked={isChecked}&pageNumber={pageNumber}");

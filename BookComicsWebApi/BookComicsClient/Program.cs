@@ -1,14 +1,15 @@
+using BookComicsClient.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-//builder.Services.Configure<WebApiOptions>(builder.Configuration.GetSection("WebApi"));
-//builder.Services.AddHttpClient("my app", client =>
-//{
-//    client.BaseAddress = new Uri(builder.Configuration.GetSection("WebApi:Url").Value);
-//});
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json")
+    .Build();
+builder.Services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
 builder.Services.AddHttpClient();
 
 
@@ -21,13 +22,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-//var configuration = new ConfigurationBuilder()
-//    .AddJsonFile("appsettings.json")
-//    .Build();
-
-
-//string apiKey = configuration["ApiKey"];
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
