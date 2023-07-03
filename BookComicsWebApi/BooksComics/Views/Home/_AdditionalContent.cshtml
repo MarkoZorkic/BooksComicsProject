@@ -15,7 +15,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.AverageRate)
             <div class="stars-container">
-                <!-- Empty stars -->
+                
                 <span class="star @(item.AverageRate > 1 ? "selected" : "")" data-value="1">&#9734;</span>
                 <span class="star @(item.AverageRate > 2 ? "selected" : "")" data-value="2">&#9734;</span>
                 <span class="star @(item.AverageRate > 3 ? "selected" : "")" data-value="3">&#9734;</span>
@@ -26,12 +26,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.ReleaseDate)
         </td>
-        <td>
-            <button id="viewbtn" class="btn btn-primary">ViewData</button>
-        </td>
+        
 
         <td>
-            @*@Html.ActionLink("RateMovie", "RateMovie","Movie", new { id = item.Id })*@
+            
             <button class="btn btn-info rate-book-button" data-toggle="modal" data-target="#ratingModal" data-image="@item.ImagePath" data-bookid="@item.Id" data-title="@item.Title" data-backdrop="false">Rate book1</button>
         </td>
     </tr>

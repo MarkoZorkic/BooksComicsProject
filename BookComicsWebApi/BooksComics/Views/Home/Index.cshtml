@@ -8,7 +8,7 @@
     <input id="searchInput" type="text" placeholder="Search books..." minlength="3">
     <button id="searchButton" class="btn btn-primary">Search</button>
 </div>
-<!-- CSS styles for the toggle switch -->
+
 <style>
     .switch {
         position: relative;
@@ -112,12 +112,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ReleaseDate)
                 </td>
-                <td>
-                    <button id="viewbtn" class="btn btn-primary">ViewData</button>
-                </td>
+                
 
                 <td>
-                    @*@Html.ActionLink("RateMovie", "RateMovie","Movie", new { id = item.Id })*@
+                   
                     <button id="ratebtn" class="btn btn-info">Rate book</button>
                 </td>
             </tr>
@@ -125,7 +123,7 @@
     </tbody>
 </table>
 
-<!-- JavaScript code for handling the toggle state change -->
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
