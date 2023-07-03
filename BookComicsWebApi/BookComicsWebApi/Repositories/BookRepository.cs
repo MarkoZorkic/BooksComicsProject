@@ -185,7 +185,7 @@ namespace BookComicsWebApi.Repositories
                 _context.Actors.AddRange(newActors);
                 _context.BookRates.AddRange(newBookRates);
 
-                // Save changes to the database
+               
                 _context.SaveChanges();
 
                 return new HttpResponseMessage(System.Net.HttpStatusCode.OK);

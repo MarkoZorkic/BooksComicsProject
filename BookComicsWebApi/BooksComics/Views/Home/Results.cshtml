@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<BooksComics.DTOs.ResponseModels.BookResponseModel>
-@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
-@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>*@
+
 @foreach (var item in Model)
 {
     <tr>
@@ -17,7 +15,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.AverageRate)
             <div class="stars-container">
-                <!-- Empty stars -->
+               
                 <span class="star @(item.AverageRate > 1 ? "selected" : "")" data-value="1">&#9734;</span>
                 <span class="star @(item.AverageRate > 2 ? "selected" : "")" data-value="2">&#9734;</span>
                 <span class="star @(item.AverageRate > 3 ? "selected" : "")" data-value="3">&#9734;</span>
@@ -28,12 +26,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.ReleaseDate)
         </td>
+        
         <td>
-            <button id="viewbtn" class="btn btn-primary">ViewData</button>
-        </td>
-
-        <td>
-            @*@Html.ActionLink("RateMovie", "RateMovie","Movie", new { id = item.Id })*@
+            
             <button class="btn btn-info rate-book-button" data-toggle="modal" data-target="#ratingModal" data-image="@item.ImagePath" data-bookid="@item.Id" data-title = "@item.Title" data-backdrop="false">Rate book1</button>
         </td>
     </tr>
@@ -50,7 +45,7 @@
     .rating-stars .star,
     .stars-container .star{
         display: inline-block;
-        font-size: 36px; /* Increase the font size as per your preference */
+        font-size: 36px; 
         cursor: pointer;
     }
 
@@ -59,7 +54,7 @@
             position: absolute;
             content: "\2605";
             color: yellow;
-            font-size: 36px; /* Increase the font size to match the star size */
+            font-size: 36px; 
         }
 
     .modal-open {

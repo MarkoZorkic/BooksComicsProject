@@ -11,10 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<BooksComicDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BooksComicsConnectionString")));
-// Add services to the container.
+
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
@@ -25,7 +25,7 @@ builder.Services.Configure<AuthorizationKey>(configuration.GetSection("Authoriza
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
-    // Add the API key security scheme
+   
     c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
     {
         Description = "API key needed to access the endpoints.",
@@ -34,7 +34,7 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "ApiKeyScheme"
     });
-    // Add the requirement for the API key
+    
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -56,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -65,7 +65,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Add API key middleware
 app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthorization();

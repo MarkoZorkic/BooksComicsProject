@@ -138,12 +138,11 @@
             refreshTableData();
         });
 
-        // Function to refresh the table data
+        
         function refreshTableData() {
-            console.log("marko1");
             var isChecked = $("#myToggle").is(":checked");
 
-            // Send the toggle state to the server and update the table data
+            
             $.ajax({
                 type: "GET",
                 url: "/Home/GetTableDataPartial",
@@ -154,7 +153,7 @@
             });
         }
 
-        // Initial table data population
+       
         refreshTableData();
     });
 
@@ -167,7 +166,7 @@
 
 
     $(document).ready(function () {
-         pageNumber = 1; // Initial page number
+         pageNumber = 1; 
         var isChecked = $("#myToggle").is(":checked");
 
         $('#viewMoreButton').click(function () {
@@ -176,53 +175,52 @@
                 type: 'GET',
                 data: { pageNumber: pageNumber, isChecked: isChecked },
                 success: function (response) {
-                    // Append the additional content to the content container
+                   
                     $('#tbdata').append(response);
 
-                    // Increment the page number for the next request
+                    
                     pageNumber++;
                 },
                 error: function (xhr, status, error) {
-                    // Handle error response if needed
+                    
                     console.log('Error retrieving additional content:', error);
                 }
             });
         });
-        // Function to refresh the table data
+        
         function refreshTable(isChecked, searchTerm) {
-            // Send the toggle state and search term to the server and update the table
+            
             $.ajax({
                 type: "GET",
                 url: "/Home/IndexWithSearchTerm",
                 data: { isChecked: isChecked, searchTerm: searchTerm },
                 success: function (response) {
-                    // Replace the table body with the updated data
+                    
                     $("#tbdata").html(response);
                 }
             });
         }
 
-        // Event handler for the toggle state change
+        
         $("#myToggle").change(function () {
-            // Refresh the table when the toggle is changed
+            
             var searchTerm = $("#searchInput").val();
             if (searchTerm.length >= 3) {
                 refreshTable($(this).is(":checked"), searchTerm);
             }
         });
 
-        // Event handler for search button click
         $("#searchButton").click(function () {
-            // Refresh the table when the search button is clicked
+            
             var searchTerm = $("#searchInput").val();
             if (searchTerm.length >= 3) {
                 refreshTable($("#myToggle").is(":checked"), searchTerm);
             }
         });
 
-        // Event handler for search input change
+       
         $("#searchInput").on("input", function () {
-            // Enable or disable the search button based on the search term length
+           
             var searchTerm = $(this).val();
             if (searchTerm.length >= 3) {
                 $("#searchButton").prop("disabled", false);
@@ -231,7 +229,6 @@
             }
         });
 
-        // Initial table data population
         refreshTable($("#myToggle").is(":checked"), "");
     });
 
@@ -240,66 +237,63 @@
 <script>
 
     $(document).ready(function () {
-        var selectedRating = 0; // Initialize selectedRating variable
+        var selectedRating = 0; 
         var selectedBookId;
-        // Handle star selection
+        
         $('.rating-stars .star').click(function () {
-            selectedRating = $(this).data('value'); // Update selectedRating value
+            selectedRating = $(this).data('value'); 
 
             $('.rating-stars .star').each(function () {
                 var starValue = $(this).data('value');
                 if (starValue <= selectedRating) {
-                    $(this).addClass('selected'); // Add 'selected' class to fill star in yellow
+                    $(this).addClass('selected');
                 } else {
-                    $(this).removeClass('selected'); // Remove 'selected' class to keep star empty
+                    $(this).removeClass('selected'); 
                 }
             });
         });
 
-        // Handle rating submission
+        
         $('#submitRating').click(function () {
             if (selectedRating > 0) {
-                // Send the selectedRating value to a POST method
+               
                 $.ajax({
-                    url: '/Home/RateBook', // Replace with your actual POST endpoint
+                    url: '/Home/RateBook', 
                     type: 'POST',
                     data: { rating: selectedRating, bookId: selectedBookId },
                     success: function (result) {
-                        // Handle success response if needed
+                        
                         refreshTableData()
                         pageNumber = 1;
                         console.log('Rating submitted successfully');
                     },
                     error: function (xhr, status, error) {
-                        // Handle error response if needed
+                       
                         console.log('Error submitting rating:', error);
                     }
                 });
 
-                // Close the modal
+               
                 $('#ratingModal').modal('hide');
             }
         });
 
 
         $(document.body).on("click", ".rate-book-button",function () {
-            console.log("dasdad");
             var imagePath = $(this).data('image');
             var bookId = $(this).data('bookid');
             var bookTitle = $(this).data('title');
-            // Set the image source and book ID in the modal
+          
             $('#bookImage').attr('src', imagePath);
             $('#bookName').text(bookTitle);
             selectedBookId = bookId;
         });
     });
 
-    // Function to refresh the table data
     function refreshTableData() {
-        console.log("marko1");
         var isChecked = $("#myToggle").is(":checked");
 
-        // Send the toggle state to the server and update the table data
+       
         $.ajax({
             type: "GET",
             url: "/Home/GetTableDataPartial",

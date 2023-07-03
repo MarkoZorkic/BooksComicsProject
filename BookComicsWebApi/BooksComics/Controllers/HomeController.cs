@@ -18,12 +18,7 @@ namespace BooksComics.Controllers
             _appSettings = appSettings.Value;
             _apiKey = apiKey.Value;
         }
-        private readonly int PageSize = 5;
-        //public async Task<IActionResult> Index(bool isChecked)
-        //{
-        //    var topRatedBooks = await _bookRepository.GetTopRatedBooksAsync(isChecked);
-        //    return View(topRatedBooks);
-        //}
+
 
         public async Task<IActionResult> GetTableData(bool isChecked = true)
         {
@@ -93,7 +88,7 @@ namespace BooksComics.Controllers
             IEnumerable<BookResponseModel> additionalContent = null!;
             client.BaseAddress = new Uri(baseUrl);
 
-            // Get the additional content
+            
             var response = await client.GetAsync($"api/Book/GetAdditionalContent?isChecked={isChecked}&pageNumber={pageNumber}");
             if (response.IsSuccessStatusCode)
             {
@@ -124,10 +119,6 @@ namespace BooksComics.Controllers
             return View();
         }
 
-        //private async Task<IEnumerable<BookResponseModel>> GetItems(bool isChecked, int offset, int count)
-        //{
-        //    return await _bookRepository.GetPaginatedData(isChecked, offset, count);
-        //}
     }
     
 }

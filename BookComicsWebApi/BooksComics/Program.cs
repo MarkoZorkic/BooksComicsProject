@@ -12,7 +12,7 @@ builder.Services.Configure<AppSettings>(configuration.GetSection("AppSettings"))
 builder.Services.Configure<AuthorizationKey>(configuration.GetSection("AuthorizationKey"));
 
 builder.Services.AddHttpClient();
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
