@@ -4,6 +4,7 @@ using BookComicsWebApi.Data;
 using BookComicsWebApi.DTOs.ResponseModels;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using BookComicsWebApi.DTOs.RequestModels;
 
 namespace BookComicsWebApi.Repositories
 {
@@ -40,7 +41,7 @@ namespace BookComicsWebApi.Repositories
                 {
                     var starRating = int.Parse(starMatch.Groups[1].Value);
 
-                    books = query.OrderByDescending(x => GetAverageRate(x.Id) >= starRating).ToList();
+                    books = query.Where(x => GetAverageRate(x.Id) >= starRating).ToList();
                 }
                 else if (olderThanYearsMatch.Success)
                 {
@@ -133,6 +134,73 @@ namespace BookComicsWebApi.Repositories
             var result = sumRates / ratesCount;
             return Math.Round((sumRates / ratesCount), 2);
 
+        }
+
+        public async Task<HttpResponseMessage> UploadBooks(List<BookDTO> books)
+        {
+            try
+            {
+                var newBooks = new List<Book>();
+                var newActors = new List<Actor>();
+                var newBookRates = new List<BookRate>();
+               
+                foreach (var book in books)
+                {
+                   
+                    var newBook = new Book
+                    {
+                        Title = book.Title,
+                        Description = book.Description,
+                        ReleaseDate = book.ReleaseDate,
+                        ImagePath = book.ImagePathBase64,
+                        IsBook = book.IsBook
+                    };
+
+                    newBooks.Add(newBook);
+
+                    foreach (var actorDto in book.Actors)
+                    {
+                        var newActor = new Actor
+                        {
+                            Name = actorDto.Name,
+                            Book = newBook
+                        };
+
+                        newActors.Add(newActor);
+                    }
+
+                    foreach (var bookRateDto in book.BookRates)
+                    {
+                        var newBookRate = new BookRate
+                        {
+                            Book = newBook,
+                            Rate = bookRateDto.Rate
+                        };
+
+                        newBookRates.Add(newBookRate);
+                    }
+                }
+
+                _context.Books.AddRange(newBooks);
+                _context.Actors.AddRange(newActors);
+                _context.BookRates.AddRange(newBookRates);
+
+                // Save changes to the database
+                _context.SaveChanges();
+
+                return new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return new HttpResponseMessage(System.Net.HttpStatusCode.NotFound);
+            }
+        }
+
+        private string ConvertImageToBase64(string imagePath)
+        {
+            byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+            string base64String = Convert.ToBase64String(imageBytes);
+            return base64String;
         }
     }
 }

@@ -96,7 +96,6 @@ namespace BookComicsClient.Controllers
             IEnumerable<BookWebApiModel> additionalContent = null!;
             client.BaseAddress = new Uri(baseUrl);
 
-            // Get the additional content
             var response = await client.GetAsync($"api/Book/GetAdditionalContent?isChecked={isChecked}&pageNumber={pageNumber}");
             if (response.IsSuccessStatusCode)
             {
@@ -104,7 +103,6 @@ namespace BookComicsClient.Controllers
                 additionalContent = JsonConvert.DeserializeObject<List<BookWebApiModel>>(result)!;
             }
 
-            // Return the additional content as a partial view
             return Ok( additionalContent);
         }
 

@@ -1,4 +1,5 @@
 ﻿using BookComicsWebApi.Contracts;
+using BookComicsWebApi.DTOs.RequestModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,10 +48,23 @@ namespace BookComicsWebApi.Controllers
         }
 
         [HttpPost("RateBook")]
-        public async Task<HttpResponseMessage> RateBook(int rating, int bookId)
+        public async Task<HttpResponseMessage> RateBook(RateModel model)
         {
-            return await _bookRepository.RateBook(rating, bookId);
+            return await _bookRepository.RateBook(model.Rating, model.BookId);
         }
+
+        [HttpPost("UploadBooks")]
+        public async Task<HttpResponseMessage> UploadBooks(List<BookDTO> books)
+        {
+            return await _bookRepository.UploadBooks(books);
+        }
+
+    }
+
+    public class RateModel
+    {
+        public int Rating { get; set; }
+        public int BookId { get; set; }
 
     }
 }

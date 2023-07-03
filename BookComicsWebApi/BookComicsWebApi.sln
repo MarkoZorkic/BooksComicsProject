@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookComicsWebApi", "BookComicsWebApi\BookComicsWebApi.csproj", "{B75059DA-754D-4139-AB58-80EED326DA4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookComicsWebApi", "BookComicsWebApi\BookComicsWebApi.csproj", "{B75059DA-754D-4139-AB58-80EED326DA4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookComicsClient", "BookComicsClient\BookComicsClient.csproj", "{4F0633A3-C484-41B5-BDBC-2289DA68854D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksComics", "BooksComics\BooksComics.csproj", "{3A34C4FE-A9D0-4C4C-B646-EB82206CA822}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{B75059DA-754D-4139-AB58-80EED326DA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B75059DA-754D-4139-AB58-80EED326DA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B75059DA-754D-4139-AB58-80EED326DA4C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F0633A3-C484-41B5-BDBC-2289DA68854D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F0633A3-C484-41B5-BDBC-2289DA68854D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F0633A3-C484-41B5-BDBC-2289DA68854D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F0633A3-C484-41B5-BDBC-2289DA68854D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A34C4FE-A9D0-4C4C-B646-EB82206CA822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A34C4FE-A9D0-4C4C-B646-EB82206CA822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A34C4FE-A9D0-4C4C-B646-EB82206CA822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A34C4FE-A9D0-4C4C-B646-EB82206CA822}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

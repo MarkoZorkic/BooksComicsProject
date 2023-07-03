@@ -28,8 +28,8 @@ builder.Services.AddSwaggerGen(c =>
     // Add the API key security scheme
     c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
     {
-        Description = "API key needed to access the endpoints. Example: \"Bearer {API Key}\"",
-        Name = "Authorization",
+        Description = "API key needed to access the endpoints.",
+        Name = "ApiKey",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = "ApiKeyScheme"
@@ -46,7 +46,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "ApiKey"
                 },
                 Scheme = "ApiKeyScheme",
-                Name = "Authorization",
+                Name = "ApiKey",
                 In = ParameterLocation.Header
             },
             new List<string>()

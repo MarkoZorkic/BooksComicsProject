@@ -1,0 +1,219 @@
+﻿
+<label class="switch">
+    <input id="myToggle" type="checkbox">
+    <span class="slider round"></span>
+</label>
+
+<div id="searchBar">
+    <input id="searchInput" type="text" placeholder="Search books..." minlength="3">
+    <button id="searchButton" class="btn btn-primary">Search</button>
+</div>
+<!-- CSS styles for the toggle switch -->
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+
+
+@model IEnumerable<BooksComics.DTOs.ResponseModels.BookResponseModel>
+<table class="table" id="tagstable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AverageRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbdata">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageRate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td>
+                    <button id="viewbtn" class="btn btn-primary">ViewData</button>
+                </td>
+
+                <td>
+                    @*@Html.ActionLink("RateMovie", "RateMovie","Movie", new { id = item.Id })*@
+                    <button id="ratebtn" class="btn btn-info">Rate book</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- JavaScript code for handling the toggle state change -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Event handler for the toggle state change
+        $("#myToggle").change(function () {
+            refreshTableData();
+        });
+
+        // Function to refresh the table data
+        function refreshTableData() {
+            var isChecked = $("#myToggle").is(":checked");
+
+            // Send the toggle state to the server and update the table data
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetTableData",
+                data: { isChecked: isChecked },
+                success: function (response) {
+                    // Replace the table body with the updated data
+                    $("#tbdata").html(response);
+                }
+            });
+        }
+
+        // Initial table data population
+        refreshTableData();
+    });
+
+
+
+
+
+
+
+
+    $(document).ready(function () {
+        // Function to refresh the table data
+        function refreshTable(isChecked, searchTerm) {
+            // Send the toggle state and search term to the server and update the table
+            $.ajax({
+                type: "GET",
+                url: "/Home/IndexWithSearchTerm",
+                data: { isChecked: isChecked, searchTerm: searchTerm },
+                success: function (response) {
+                    // Replace the table body with the updated data
+                    $("#tbdata").html(response);
+                }
+            });
+        }
+
+        // Event handler for the toggle state change
+        $("#myToggle").change(function () {
+            // Refresh the table when the toggle is changed
+            var searchTerm = $("#searchInput").val();
+            if (searchTerm.length >= 3) {
+                refreshTable($(this).is(":checked"), searchTerm);
+            }
+        });
+
+        // Event handler for search button click
+        $("#searchButton").click(function () {
+            // Refresh the table when the search button is clicked
+            var searchTerm = $("#searchInput").val();
+            if (searchTerm.length >= 3) {
+                refreshTable($("#myToggle").is(":checked"), searchTerm);
+            }
+        });
+
+        // Event handler for search input change
+        $("#searchInput").on("input", function () {
+            // Enable or disable the search button based on the search term length
+            var searchTerm = $(this).val();
+            if (searchTerm.length >= 3) {
+                $("#searchButton").prop("disabled", false);
+            } else {
+                $("#searchButton").prop("disabled", true);
+            }
+        });
+
+        // Initial table data population
+        refreshTable($("#myToggle").is(":checked"), "");
+    });
+
+</script>
+
+
+
+
+
+
+

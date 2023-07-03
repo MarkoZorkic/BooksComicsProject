@@ -20,10 +20,6 @@ namespace BookComicsWebApi.Middleware
             string apiKey = context.Request.Headers["ApiKey"];
             string validApiKey = _apiKey.ApiKey; 
             
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                apiKey = context.Request.Headers["Authorization"]; ;
-            }
             if (apiKey != validApiKey)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
